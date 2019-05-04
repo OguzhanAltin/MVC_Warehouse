@@ -34,6 +34,7 @@
                                             <th>Product Description</th>
                                             <th>Unit Price</th>
                                             <th>Unit In Stock</th>
+                                            <th>Category Name</th>
                                             <th>Update</th>
                                             <th>Delete</th>
                                         </tr>
@@ -46,6 +47,7 @@
                                             <td>@item.ProductDescription</td>
                                             <td>@item.UnitPrice</td>
                                             <td>@item.UnitInStock</td>
+                                            <td>@item.CategoryName</td>
                                             <td><a href="/Product/UpdateProduct/@item.ID" type="button" class="btn btn-block btn-warning">Update</a></td>
                                             <td><a href="/Product/DeleteProduct/@item.ID" type="button" class="btn btn-block btn-danger">Delete</a></td>
                                         </tr>

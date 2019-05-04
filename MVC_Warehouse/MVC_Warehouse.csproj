@@ -133,6 +133,7 @@
     <Compile Include="Models\DTO\BaseDTO.cs" />
     <Compile Include="Models\DTO\CategoryDTO.cs" />
     <Compile Include="Models\DTO\ProductDTO.cs" />
+    <Compile Include="Models\VM\ProductVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

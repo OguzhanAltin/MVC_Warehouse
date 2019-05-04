@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_MasterLayoutPage.cshtml";
 }
 
+@model List<MVC_Warehouse.DAL.ORM.Entity.Category>
+
 <section class="content-header">
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
@@ -36,6 +38,15 @@
                         <div class="form-group">
                             <label>Unit In Stock</label>
                             <input type="number" name="UnitInStock" class="form-control" placeholder="Unit In Stock">
+                        </div>
+                        <div class="form-group">
+                            <label for="CategoryID">Choose A Category</label>
+                            <select name="CategoryID" class="form-control">
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.ID">@item.CategoryName</option>
+                                }
+                            </select> 
                         </div>
                     </div>
                     <div class="box-footer">

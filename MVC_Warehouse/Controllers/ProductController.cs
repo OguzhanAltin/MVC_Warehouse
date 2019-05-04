@@ -1,5 +1,6 @@
 ﻿using MVC_Warehouse.DAL.ORM.Entity;
 using MVC_Warehouse.Models.DTO;
+using MVC_Warehouse.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MVC_Warehouse.Controllers
 {
     public class ProductController : BaseController
     {
-        // GET: Product
+        
         public ActionResult AddProduct()
         {
             List<Category> model = db.Categories
@@ -26,52 +27,63 @@ namespace MVC_Warehouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                Product pro = new Product();
+                Product product = new Product();
 
-                pro.ProductName = model.ProductName;
-                pro.ProductDescription = model.ProductDescription;
-                pro.UnitPrice = model.UnitPrice;
-                pro.UnitInStock = model.UnitInStock;
+                product.ProductName = model.ProductName;
+                product.ProductDescription = model.ProductDescription;
+                product.UnitPrice = model.UnitPrice;
+                product.UnitInStock = model.UnitInStock;
+                product.CategoryID = model.CategoryID;
 
-                db.Products.Add(pro);
+                db.Products.Add(product);
                 db.SaveChanges();
 
                 return Redirect("/Product/ListProduct");
             }
-
-            else return View();
+            else
+            {
+                return View();
+            }
         }
+
+
 
         public ActionResult ListProduct()
         {
             List<ProductDTO> model = db.Products
                 .Where(x => x.Status == DAL.ORM.Enum.Status.Active || x.Status == DAL.ORM.Enum.Status.Updated)
-                .Select(y => new ProductDTO
-                {
-                    ID = y.ID,
-                    ProductName = y.ProductName,
-                    ProductDescription = y.ProductDescription,
-                    UnitPrice = y.UnitPrice,
-                    UnitInStock = y.UnitInStock
+                .Select(x => new ProductDTO
+            {
+                ID=x.ID,
+                ProductName=x.ProductName,
+                ProductDescription = x.ProductDescription,
+                UnitPrice = x.UnitPrice,
+                UnitInStock = x.UnitInStock,
+                CategoryID = x.CategoryID,
+                CategoryName = x.Category.CategoryName
 
-                }).ToList();
+            }).ToList();
 
             return View(model);
         }
 
+
         public ActionResult UpdateProduct(int id)
         {
-            Product pro = db.Products
+            ProductVM model = new ProductVM();
 
+            Product product = db.Products
                 .FirstOrDefault(x => x.ID == id);
 
-            ProductDTO model = new ProductDTO();
+            model.Product.ID = product.ID;
+            model.Product.ProductName = product.ProductName;
+            model.Product.ProductDescription = product.ProductDescription;
+            model.Product.UnitPrice = product.UnitPrice;
+            model.Product.UnitInStock = product.UnitInStock;
 
-            model.ID = pro.ID;
-            model.ProductName = pro.ProductName;
-            model.ProductDescription = pro.ProductDescription;
-            model.UnitPrice = pro.UnitPrice;
-            model.UnitInStock = pro.UnitInStock;
+            List<Category> categorymodel = db.Categories.Where(x => x.Status == DAL.ORM.Enum.Status.Active || x.Status == DAL.ORM.Enum.Status.Updated).ToList();
+
+            model.Categories = categorymodel;
 
             return View(model);
         }
@@ -81,30 +93,31 @@ namespace MVC_Warehouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                Product pro = db.Products
-
+                Product product = db.Products
                     .FirstOrDefault(x => x.ID == model.ID);
 
-                pro.ProductName = model.ProductName;
-                pro.ProductDescription = model.ProductDescription;
-                pro.UnitPrice = model.UnitPrice;
-                pro.UnitInStock = model.UnitInStock;
+                product.ProductName = model.ProductName;
+                product.ProductDescription = model.ProductDescription;
+                product.UnitPrice = model.UnitPrice;
+                product.UnitInStock = model.UnitInStock;
+                product.CategoryID = model.CategoryID;
 
-                pro.Status = DAL.ORM.Enum.Status.Updated;
-                pro.UpdateDate = DateTime.Now;
+                product.Status = DAL.ORM.Enum.Status.Updated;
+                product.UpdateDate = DateTime.Now;
 
                 db.SaveChanges();
 
                 return Redirect("/Product/ListProduct");
             }
-
-            else return View();
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult DeleteProduct(int id)
         {
             Product pro = db.Products
-
                 .FirstOrDefault(x => x.ID == id);
 
             pro.Status = DAL.ORM.Enum.Status.Deleted;

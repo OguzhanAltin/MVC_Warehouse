@@ -11,5 +11,7 @@ namespace MVC_Warehouse.Models.DTO
         public string ProductDescription { get; set; }
         public decimal? UnitPrice { get; set; }
         public short? UnitInStock { get; set; }
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
     }
 }
